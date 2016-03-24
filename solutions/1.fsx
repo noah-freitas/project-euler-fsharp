@@ -5,15 +5,14 @@
 ///
 /// Find the sum of all the multiples of 3 or 5 below 1000.
 
-// Using pipelining
-let answer = [1..999]
-             |> List.filter (fun n -> n % 3 = 0 || n % 5 = 0)
-             |> List.reduce (fun x y -> x + y)
+// Common functions
+let divisibleBy3Or5 n = n % 3 = 0 || n % 5 = 0
+let sum x y = x + y
+let printAnswer ans = printfn "The sum of all the multiples of 3 or 5 below 1000 is %d" ans
 
-printfn "The sum of all the multiples of 3 or 5 below 1000 is %d" answer
+// Using pipelining
+printAnswer ([1..999] |> List.filter divisibleBy3Or5 |> List.reduce sum)
 
 // Using function composition
-let sumOfMultiplesOf3And5 = List.filter (fun n -> n % 3 = 0 || n % 5 = 0)
-                            >> List.reduce (fun x y -> x + y)
-
-printfn "The sum of all the multiples of 3 or 5 below 1000 is %d" (sumOfMultiplesOf3And5 [1..999])
+let sumOfMultiplesOf3And5 = List.filter divisibleBy3Or5 >> List.reduce sum
+printAnswer (sumOfMultiplesOf3And5 [1..999])
